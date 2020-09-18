@@ -34,3 +34,13 @@ class LoginTest(APITestCase):
         )
         self.assertEqual(login_response.status_code, status.HTTP_200_OK)
         self.assertContains(login_response, "token")
+
+    def test_wrong_login(self):
+        url = reverse("login")
+        response = self.client.post(url, {"username": "testuser", "password": "hacker"})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_get_req(self):
+        url = reverse("login")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
