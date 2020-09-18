@@ -2,6 +2,7 @@ from rest_framework.test import APITestCase
 from django.contrib.auth.models import User
 from django.urls import reverse
 from rest_framework import status
+from rest_framework.test import RequestsClient
 
 
 class LoginTest(APITestCase):
@@ -44,3 +45,41 @@ class LoginTest(APITestCase):
         url = reverse("login")
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+class TestLogout(APITestCase):
+    """
+    Unit tests for user logout
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Create user in database
+        """
+        cls.user = User.objects.create_user(
+            "testuser", "testuser@test.com", "testingpass"
+        )
+        cls.user.first_name = "John"
+        cls.user.last_name = "Wick"
+        cls.user.save()
+
+    def test_logout(self):
+        login_url = reverse("login")
+        logout_url = reverse("logout")
+        response = self.client.post(
+            login_url, {"username": "testuser", "password": "testingpass"}
+        )
+        token = response.data.get("token")
+        response_again = self.client.post(
+            login_url, {"username": "testuser", "password": "testingpass"}
+        )
+        token_again = response_again.data.get("token")
+        self.assertEqual(token, token_again)
+        self.client.login(username="testuser", password="testingpass")
+        self.client.delete(logout_url)
+        new_response = self.client.post(
+            login_url, {"username": "testuser", "password": "testingpass"}
+        )
+        new_token = new_response.data.get("token")
+        self.assertNotEqual(token, new_token)

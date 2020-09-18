@@ -1,4 +1,5 @@
-from rest_framework.authtoken import views
-from django.urls import path
+from django.urls import path, include
 
-urlpatterns = [path("login/", views.obtain_auth_token, name="login")]
+urlpatterns = [
+    path("user/", include("profiles.urls")),
+]
