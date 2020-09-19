@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "dvub(2i0b-m9hw4_$%$jct%!u2@zj58d)91!q&0)!!3_m_mm^c"
+SECRET_KEY = os.environ.get("TODO_CORE_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -50,7 +50,7 @@ TEST_RUNNER = "django_nose.NoseTestSuiteRunner"
 
 NOSE_ARGS = [
     "--with-coverage",
-    "--cover-package=todocore,todoapp,profiles,rest_controller",
+    "--cover-package=todoapp,profiles,rest_controller",
 ]
 
 REST_FRAMEWORK = {
@@ -80,6 +80,11 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+X_FRAME_OPTIONS = "DENY"
+
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
 
 ROOT_URLCONF = "todocore.urls"
 

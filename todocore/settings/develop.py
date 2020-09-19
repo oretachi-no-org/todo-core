@@ -1,0 +1,3 @@
+CSRF_COOKIE_SECURE = False
+
+ALLOWED_HOSTS = ["*"]
