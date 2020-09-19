@@ -1,8 +1,10 @@
-from rest_framework.authtoken import views
-from .views import Logout
+from profiles.views import Logout
 from django.urls import path
+from profiles import documented_views
+
 
 urlpatterns = [
-    path("login/", views.obtain_auth_token, name="login"),
-    path("logout/", Logout.as_view(), name="logout")
+    path("login/", documented_views.auth_token_view, name="login"),
+    path("logout/", Logout.as_view(), name="logout"),
+    path("account/", documented_views.account_view, name="user_account"),
 ]

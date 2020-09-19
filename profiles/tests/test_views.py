@@ -83,3 +83,34 @@ class TestLogout(APITestCase):
         )
         new_token = new_response.data.get("token")
         self.assertNotEqual(token, new_token)
+
+
+class TestUserCreate(APITestCase):
+    """
+    Unit tests for create user.
+    """
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
+            "testuser", "test@test.com", "strong-passwert43:"
+        )
+        cls.user.first_name = "Pink"
+        cls.user.last_name = "Panther"
+        cls.user.save()
+
+        cls.url = reverse("user_account")
+
+    def test_create_new_user(self):
+        response = self.client.post(
+            self.url,
+            {
+                "username": "amazing_user",
+                "email": "amazing@user.com",
+                "password": "very_strong_pesswort32",
+                "firstName": "Shazam",
+            },
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data.get("first_name"), "Shazam")
