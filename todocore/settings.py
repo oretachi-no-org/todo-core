@@ -37,11 +37,20 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_nose",
     "rest_framework",
     "rest_framework.authtoken",
     "drf_yasg",
     "profiles",
+    "todoapp",
     "rest_controller",
+]
+
+TEST_RUNNER = "django_nose.NoseTestSuiteRunner"
+
+NOSE_ARGS = [
+    "--with-coverage",
+    "--cover-package=todocore,todoapp,profiles,rest_controller",
 ]
 
 REST_FRAMEWORK = {

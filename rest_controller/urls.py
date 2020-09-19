@@ -21,4 +21,5 @@ urlpatterns = [
         name="schema-swagger-ui",
     ),
     path("user/", include("profiles.urls")),
+    path("todo/", include("todoapp.urls")),
 ]

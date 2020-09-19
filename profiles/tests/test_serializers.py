@@ -1,5 +1,5 @@
 from django.test import TestCase
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from rest_framework.serializers import ValidationError
 from profiles.serializers import UserAccountSerializer
 
@@ -7,7 +7,7 @@ from profiles.serializers import UserAccountSerializer
 class TestUserAccountSerizalizer(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.user = User.objects.create_user(
+        cls.user = get_user_model().objects.create_user(
             username="testuser", email="test@test.com", password="pass"
         )
         cls.user.first_name = "John"

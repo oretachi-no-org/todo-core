@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.validators import ASCIIUsernameValidator
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 
 
@@ -27,7 +27,8 @@ class UserAccountSerializer(serializers.Serializer):
         validators=[
             ASCIIUsernameValidator(),
             UniqueValidator(
-                queryset=User.objects.all(), message="Username already taken"
+                queryset=get_user_model().objects.all(),
+                message="Username already taken",
             ),
         ],
     )
@@ -39,7 +40,8 @@ class UserAccountSerializer(serializers.Serializer):
         """
         Validate secure password.
         """
-        user = User(
+        user_model = get_user_model()
+        user = user_model(
             username=data.get("username", ""),
             email=data.get("email", ""),
             first_name=data.get("first_name", ""),
@@ -50,7 +52,8 @@ class UserAccountSerializer(serializers.Serializer):
         return data
 
     def create(self, validated_data):
-        user = User.objects.create_user(
+        user_model = get_user_model()
+        user = user_model.objects.create_user(
             validated_data.get("username"),
             validated_data.get("email"),
             validated_data.get("password"),

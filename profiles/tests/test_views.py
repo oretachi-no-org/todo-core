@@ -1,8 +1,7 @@
 from rest_framework.test import APITestCase
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework import status
-from rest_framework.test import RequestsClient
 
 
 class LoginTest(APITestCase):
@@ -15,7 +14,7 @@ class LoginTest(APITestCase):
         """
         Create user in database
         """
-        cls.user = User.objects.create_user(
+        cls.user = get_user_model().objects.create_user(
             "testuser", "testuser@test.com", "testingpass"
         )
         cls.user.first_name = "John"
@@ -23,7 +22,7 @@ class LoginTest(APITestCase):
         cls.user.save()
 
     def test_user_names(self):
-        user = User.objects.get_by_natural_key("testuser")
+        user = get_user_model().objects.get_by_natural_key("testuser")
 
         self.assertEqual(user.first_name, self.user.first_name)
 
@@ -57,7 +56,7 @@ class TestLogout(APITestCase):
         """
         Create user in database
         """
-        cls.user = User.objects.create_user(
+        cls.user = get_user_model().objects.create_user(
             "testuser", "testuser@test.com", "testingpass"
         )
         cls.user.first_name = "John"
@@ -92,7 +91,7 @@ class TestUserCreate(APITestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.user = User.objects.create_user(
+        cls.user = get_user_model().objects.create_user(
             "testuser", "test@test.com", "strong-passwert43:"
         )
         cls.user.first_name = "Pink"
