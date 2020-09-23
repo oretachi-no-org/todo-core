@@ -9,7 +9,7 @@ Rest APIs for managing to-do lists and tasks including:
 Follow this for development setup. Optionally, you can use the included
 dev.Dockerfile to create a docker image.
 
-###Manual dev setup:
+### Manual dev setup:
 
 ##### Virtual Environment
 ```shell script
